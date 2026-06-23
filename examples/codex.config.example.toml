@@ -1,0 +1,24 @@
+# Copy to ~/.codex/config.toml and adjust paths in [projects.*]
+
+model_provider = "infini_transfer"
+model = "glm-5.2"
+review_model = "glm-5.2"
+model_reasoning_effort = "high"
+disable_response_storage = true
+network_access = "enabled"
+
+# Codex sandbox bwrap fails on some hosts (RTM_NEWADDR). Use for RLCR review only.
+sandbox_mode = "danger-full-access"
+
+[model_providers.infini_transfer]
+name = "Infini-AI via codex-transfer"
+base_url = "http://127.0.0.1:4446/v1"
+wire_api = "responses"
+requires_openai_auth = false
+
+[features]
+goals = true
+hooks = true
+
+[projects."/path/to/sglang-exp"]
+trust_level = "trusted"

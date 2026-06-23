@@ -1,0 +1,24 @@
+# GLM-5.2 operator optimization — B200 (sm_100) pinned stack
+# Verified: 2026-06-22 on NVIDIA B200
+#
+# Install torch FIRST from cu130 index (see setup-env.sh), then:
+#   python -m pip install -r scripts/requirements-glm52-b200.txt
+#
+# deep_gemm is NOT listed here — build from source (see docs/ENVIRONMENT-setup.md).
+
+triton==3.6.0
+sglang-kernel==0.4.4+cu129
+flashinfer-python==0.6.12
+flashinfer-cubin==0.6.12
+
+nvidia-cutlass-dsl==4.6.0.dev0
+nvidia-cutlass-dsl-libs-base==4.6.0.dev0
+nvidia-cutlass-dsl-libs-cu13==4.6.0.dev0
+
+sglang==0.5.9
+
+safetensors>=0.8.0
+huggingface_hub>=1.20.0
+transformers>=5.8.0
+numpy
+pandas

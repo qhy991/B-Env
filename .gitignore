@@ -1,0 +1,12 @@
+# Local overrides (machine-specific paths, API keys)
+config/paths.env
+config/codex-transfer.config.json
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+*.swp
