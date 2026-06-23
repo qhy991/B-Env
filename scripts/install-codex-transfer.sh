@@ -22,4 +22,4 @@ npm install @classicicn/codex-transfer@^0.4.1
 echo "Installed codex-transfer to $INSTALL_DIR"
 echo "Binary: $INSTALL_DIR/node_modules/.bin/codex-transfer"
 echo "Config: $CONFIG_DIR/config.json"
-echo "Next: set GENSTUDIO_API_KEY, then bash $B_ENV_ROOT/scripts/start-codex-transfer.sh"
+echo "Next: export CODEX_TRANSFER_API_KEY=sk-xxx, then bash $B_ENV_ROOT/scripts/start-codex-transfer.sh"

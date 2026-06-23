@@ -7,13 +7,11 @@ PID_FILE="$HOME/.codex-transfer/logs/codex-transfer.pid"
 INSTALL_DIR="${CODEX_TRANSFER_HOME:-$HOME/.local/codex-transfer}"
 BIN="$INSTALL_DIR/node_modules/.bin/codex-transfer"
 
-if [[ -z "${CODEX_TRANSFER_API_KEY:-}" && -z "${GENSTUDIO_API_KEY:-}" ]]; then
-  echo "Set CODEX_TRANSFER_API_KEY or GENSTUDIO_API_KEY before starting." >&2
-  echo "Example: source ~/.omp/agent/.env" >&2
+if [[ -z "${CODEX_TRANSFER_API_KEY:-}" ]]; then
+  echo "Set CODEX_TRANSFER_API_KEY before starting." >&2
+  echo "Example: export CODEX_TRANSFER_API_KEY=sk-your-infini-ai-key" >&2
   exit 1
 fi
-
-export CODEX_TRANSFER_API_KEY="${CODEX_TRANSFER_API_KEY:-$GENSTUDIO_API_KEY}"
 
 if [[ ! -x "$BIN" ]]; then
   echo "codex-transfer not found at $BIN" >&2

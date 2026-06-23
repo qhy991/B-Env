@@ -64,9 +64,9 @@ B-Env/
 │   ├── ENVIRONMENT-issues.md      # 实验踩坑汇总
 │   └── INFINI-AI-model-config.md # Claude + Codex + Infini-AI 配置
 └── examples/
-    ├── infini-api.env.example
     ├── claude.settings.example.json
     ├── codex-transfer.config.example.json
+    ├── codex-transfer.env.example
     ├── codex.config.example.toml
     └── humanize.config.example.json
 ```
@@ -101,14 +101,13 @@ B-Env/
 Humanize RLCR 使用 Infini-AI 模型的快速配置：
 
 ```bash
-# 1. API Key + Claude 路由
-cp examples/infini-api.env.example ~/.omp/agent/.env   # 填入 Key
-cp examples/claude.settings.example.json ~/.claude/settings.json
+# 1. Claude Code + Humanize 插件
+cp examples/claude.settings.example.json ~/.claude/settings.json   # 填 Key 和 humanize 路径
 
 # 2. codex-transfer（Codex review 桥接）
 bash scripts/install-codex-transfer.sh
 cp examples/codex-transfer.config.example.json ~/.codex-transfer/config.json
-source ~/.omp/agent/.env && bash scripts/start-codex-transfer.sh
+export CODEX_TRANSFER_API_KEY=sk-your-key && bash scripts/start-codex-transfer.sh
 
 # 3. Codex CLI
 cp examples/codex.config.example.toml ~/.codex/config.toml
@@ -125,8 +124,7 @@ bash scripts/verify-env.sh
 
 | 文件 | 作用 |
 |------|------|
-| `~/.omp/agent/.env` | Infini-AI Key + Claude Code 的 `ANTHROPIC_*` 变量 |
-| `~/.claude/settings.json` | Humanize/KerSor 插件、沙箱 bypass |
+| `~/.claude/settings.json` | Humanize 插件 + Infini-AI 路由（`env` 块） |
 | `~/.codex-transfer/config.json` | 上游 URL + modelMap（模型名映射） |
 | `~/.codex/config.toml` | Codex → 本地 `:4446` 代理 |
 | `.humanize/config.json` | 每个工作区的 review 模型（`codex_model`） |
@@ -135,7 +133,7 @@ bash scripts/verify-env.sh
 
 ```
 Claude Code（写代码）
-  ~/.claude/settings.json + ANTHROPIC_* 环境变量
+  ~/.claude/settings.json → env.ANTHROPIC_*
   → 直连 https://cloud.infini-ai.com/maas
 
 Codex（review）
@@ -143,7 +141,7 @@ Codex（review）
   → https://cloud.infini-ai.com/maas/v1
 ```
 
-**切换 Claude 模型：** 会话内 `/model glm-5.2` 或改 `.env` 里的 `ANTHROPIC_MODEL`。
+**切换 Claude 模型：** 会话内 `/model glm-5.2`，或改 `settings.json` 里 `env.ANTHROPIC_MODEL`。
 
 **切换 Codex review 模型：** 改工作区 `.humanize/config.json` 的 `codex_model`，或改 `~/.codex-transfer/config.json` 的 `modelMap`。
 

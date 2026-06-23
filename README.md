@@ -66,9 +66,9 @@ B-Env/
 │   ├── ENVIRONMENT-issues.md  # Known pitfalls from experiments
 │   └── INFINI-AI-model-config.md  # Claude + Codex + Infini-AI setup
 └── examples/
-    ├── infini-api.env.example
     ├── claude.settings.example.json
     ├── codex-transfer.config.example.json
+    ├── codex-transfer.env.example
     ├── codex.config.example.toml
     └── humanize.config.example.json
 ```
@@ -103,14 +103,13 @@ Full guide: **[docs/INFINI-AI-model-config.md](docs/INFINI-AI-model-config.md)**
 Quick setup for Humanize RLCR with Infini-AI models:
 
 ```bash
-# 1. API keys + Claude routing
-cp examples/infini-api.env.example ~/.omp/agent/.env   # edit keys
-cp examples/claude.settings.example.json ~/.claude/settings.json
+# 1. Claude Code + Humanize 插件
+cp examples/claude.settings.example.json ~/.claude/settings.json   # edit keys + humanize path
 
 # 2. codex-transfer (Codex review bridge)
 bash scripts/install-codex-transfer.sh
 cp examples/codex-transfer.config.example.json ~/.codex-transfer/config.json
-source ~/.omp/agent/.env && bash scripts/start-codex-transfer.sh
+export CODEX_TRANSFER_API_KEY=sk-your-key && bash scripts/start-codex-transfer.sh
 
 # 3. Codex CLI
 cp examples/codex.config.example.toml ~/.codex/config.toml
@@ -125,8 +124,7 @@ bash scripts/verify-env.sh
 
 | Config file | Purpose |
 |-------------|---------|
-| `~/.omp/agent/.env` | Infini-AI keys + `ANTHROPIC_*` for Claude Code |
-| `~/.claude/settings.json` | Humanize/KerSor plugins, sandbox bypass |
+| `~/.claude/settings.json` | Humanize plugin + Infini-AI routing (`env` block) |
 | `~/.codex-transfer/config.json` | Upstream URL + modelMap |
 | `~/.codex/config.toml` | Codex → local proxy on :4446 |
 | `.humanize/config.json` | Review model (`codex_model`) per workspace |

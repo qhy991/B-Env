@@ -1,7 +1,6 @@
 {
   "enabledPlugins": {
-    "humanize@PolyArch": true,
-    "kersor@qhy991": true
+    "humanize@PolyArch": true
   },
   "extraKnownMarketplaces": {
     "PolyArch": {
@@ -9,17 +8,18 @@
         "source": "directory",
         "path": "/path/to/humanize"
       }
-    },
-    "qhy991": {
-      "source": {
-        "source": "directory",
-        "path": "/path/to/KerSor"
-      }
     }
   },
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
   "env": {
+    "ANTHROPIC_BASE_URL": "https://cloud.infini-ai.com/maas",
+    "ANTHROPIC_AUTH_TOKEN": "sk-your-infini-ai-key-here",
+    "ANTHROPIC_API_KEY": "sk-your-infini-ai-key-here",
+    "ANTHROPIC_MODEL": "claude-opus-4-7",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-7",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-5.2",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-flash",
     "HUMANIZE_CODEX_BYPASS_SANDBOX": "true"
   }
 }
