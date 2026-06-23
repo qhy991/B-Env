@@ -20,12 +20,12 @@ cd B-Env
 cp config/paths.env.example config/paths.env
 # edit SGlang_PYTHON, SGLANG_EXP_ROOT, VENV_ROOT
 
-# 2. Install Python stack (requires sglang-exp repo cloned separately)
+# 2. Install Python stack (requires operator repo cloned separately; set paths in config/paths.env)
 bash scripts/setup-env.sh
 bash scripts/setup-env.sh --deep-gemm   # Index_Score / FP8 needs this
 
 # 3. Every session
-source scripts/env.sh glm52-moe-router-opt
+source scripts/env.sh <workspace-name>
 bash scripts/verify-env.sh
 ```
 
@@ -77,10 +77,10 @@ B-Env/
 
 ## Related repos (not included)
 
-This repo only manages **environment**. Operator code lives in:
+This repo only manages **environment**. Operator code lives in your local workspace tree (configure `SGLANG_EXP_ROOT` in `config/paths.env`):
 
-- `sglang-exp/` — four workspace monorepo (`glm52-*-opt/`)
-- `sglang/python/` — live SGLang source tree (patch target)
+- Operator workspaces — one directory per kernel optimization task
+- `sglang/python/` or similar — live SGLang source tree (patch target, set `SGlang_PYTHON`)
 
 ---
 

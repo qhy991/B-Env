@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Bootstrap shared GLM-5.2 B200 Python environment for sglang-exp workspaces.
+# Bootstrap shared GLM-5.2 B200 Python environment for operator workspaces.
 #
 # Usage:
 #   cp config/paths.env.example config/paths.env   # edit paths first
@@ -21,7 +21,11 @@ else
   source "${ROOT}/config/paths.env.example"
 fi
 
-VENV="${VENV_ROOT:-${SGLANG_EXP_ROOT}/glm52-kernel-opt/.venv}"
+VENV="${VENV_ROOT:-}"
+if [[ -z "${VENV}" ]]; then
+  echo "Set VENV_ROOT in config/paths.env before running setup." >&2
+  exit 1
+fi
 TORCH_INDEX="https://download.pytorch.org/whl/cu130"
 DEEP_GEMM_REPO="${DEEP_GEMM_REPO:-https://github.com/deepseek-ai/DeepGEMM.git}"
 DEEP_GEMM_REF="${DEEP_GEMM_REF:-88965b0}"
@@ -46,7 +50,7 @@ fi
 
 echo "=== B-Env setup (GLM-5.2 / B200) ==="
 echo "  venv target = ${VENV}"
-echo "  sglang-exp  = ${SGLANG_EXP_ROOT}"
+echo "  operator root = ${SGLANG_EXP_ROOT}"
 echo
 
 mkdir -p "$(dirname "${VENV}")"
@@ -75,13 +79,15 @@ ${PIP} install torch==2.11.0 torchvision torchaudio --index-url "${TORCH_INDEX}"
 echo ">>> Installing requirements..."
 ${PIP} install -r "${ROOT}/scripts/requirements-glm52-b200.txt"
 
-# Symlink sibling workspaces to shared venv
-if [[ -d "${SGLANG_EXP_ROOT}" ]]; then
-  for ws in glm52-index-k-opt glm52-index-score-opt glm52-moe-router-opt; do
+# Optional: symlink .venv into sibling workspaces (set WORKSPACE_VENV_LINKS in paths.env)
+# Example in paths.env:
+#   WORKSPACE_VENV_LINKS="ws-b ws-c ws-d"   # each gets .venv -> shared VENV_ROOT
+if [[ -n "${WORKSPACE_VENV_LINKS:-}" && -d "${SGLANG_EXP_ROOT:-}" ]]; then
+  for ws in ${WORKSPACE_VENV_LINKS}; do
     LINK="${SGLANG_EXP_ROOT}/${ws}/.venv"
     if [[ -d "${SGLANG_EXP_ROOT}/${ws}" ]]; then
-      ln -sfn "../glm52-kernel-opt/.venv" "${LINK}"
-      echo ">>> Linked ${ws}/.venv"
+      ln -sfn "${VENV}" "${LINK}"
+      echo ">>> Linked ${ws}/.venv -> ${VENV}"
     fi
   done
 fi
@@ -98,9 +104,7 @@ if [[ ${DO_DEEP_GEMM} -eq 1 ]]; then
   rm -rf "${BUILD_DIR}"
 fi
 
-# shellcheck disable=SC1091
-source "${ROOT}/scripts/env.sh"
 bash "${ROOT}/scripts/verify-env.sh" || true
 
 echo
-echo "Done. Next: source ${ROOT}/scripts/env.sh <workspace>"
+echo "Done. Next: source ${ROOT}/scripts/env.sh <workspace-name>"

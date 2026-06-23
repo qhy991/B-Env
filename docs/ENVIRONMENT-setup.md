@@ -12,7 +12,7 @@
 | **Tier B** | L1.5 SGLang smoke（patch + flag） | Tier A + live SGLang 树 |
 | **Tier C** | L3 Engine、FP8 DeepGEMM、CUDA graph、tcgen05 | Tier B + 完整版本栈（见 README） |
 
-四个算子工作区（`sglang-exp/glm52-*-opt/`）**共用一个 venv**，不要各自独立安装。
+多个算子工作区（在 `SGLANG_EXP_ROOT` 下）**共用一个 venv**，不要各自独立安装。
 
 ---
 
@@ -36,8 +36,8 @@ bash scripts/verify-env.sh             # 健康检查
 ### 2.3 每次开工
 
 ```bash
-source scripts/env.sh glm52-index-k-opt   # 第二个参数换工作区名
-cd $GLM52_WORKSPACE
+source scripts/env.sh <workspace-name>
+cd "$GLM52_WORKSPACE"
 scripts/verify_phase*.sh --quick
 ```
 
@@ -64,9 +64,9 @@ Index_K FP8 必须 `use_ue8m0=True`，否则 DeepGEMM 输出 NaN。
 环境装好后，还需把 patch 打到 live 树（各工作区 `patches/` + `docs/sglang_integration.md`）：
 
 ```bash
-export SGlang_PYTHON=~/sglang/python
-cd $SGlang_PYTHON
-patch -p0 < ~/sglang-exp/glm52-moe-router-opt/patches/phase1_p1_moe_router_hook.patch
+export SGlang_PYTHON=/path/to/sglang/python
+cd "$SGlang_PYTHON"
+patch -p0 < /path/to/workspace/patches/your_hook.patch
 ```
 
 四工作区并行时，共用 `dsa_indexer.py` 需协调；verify 脚本检查 `sglang_dsa_hash`。
@@ -117,7 +117,7 @@ curl -s http://127.0.0.1:4446/health
 ## 8. 升级 torch 后的回归
 
 ```bash
-for ws in glm52-kernel-opt glm52-index-k-opt glm52-index-score-opt glm52-moe-router-opt; do
+for ws in workspace-a workspace-b workspace-c workspace-d; do
   source scripts/env.sh "$ws"
   bash scripts/verify-env.sh
   # 各工作区 verify_phase*.sh --quick

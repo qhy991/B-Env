@@ -18,12 +18,12 @@ cd B-Env
 cp config/paths.env.example config/paths.env
 # 编辑 SGlang_PYTHON、SGLANG_EXP_ROOT、VENV_ROOT
 
-# 2. 安装 Python 栈（需单独 clone sglang-exp 仓库）
+# 2. 安装 Python 栈（算子仓库需单独 clone；路径写在 config/paths.env）
 bash scripts/setup-env.sh
 bash scripts/setup-env.sh --deep-gemm   # Index_Score / FP8 需要
 
 # 3. 每次开新 shell
-source scripts/env.sh glm52-moe-router-opt
+source scripts/env.sh <工作区目录名>
 bash scripts/verify-env.sh
 ```
 
@@ -75,10 +75,10 @@ B-Env/
 
 ## 关联仓库（不包含在本仓库内）
 
-本仓库只管理**环境**。算子代码在：
+本仓库只管理**环境**。算子代码在你本机的工作区目录（在 `config/paths.env` 里配置 `SGLANG_EXP_ROOT`）：
 
-- `sglang-exp/` — 四个算子工作区（`glm52-*-opt/`）
-- `sglang/python/` — 线上 SGLang 源码树（打 patch 的目标）
+- 各算子工作区 — 每个内核优化任务一个目录
+- SGLang 源码树 — 打 patch 的目标（配置 `SGlang_PYTHON`）
 
 ---
 

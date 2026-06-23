@@ -55,9 +55,14 @@ check_ver flashinfer 0.6.12
 CUTLASS=$("${PY}" -c "import cutlass; print(cutlass.__version__)" 2>/dev/null) || CUTLASS=FAIL
 [[ "${CUTLASS}" == 4.6.0.dev0 ]] && ok "cutlass: ${CUTLASS}" || warn "cutlass: ${CUTLASS} (Phase 5 needs 4.6.0.dev0)"
 
-SGL="${SGlang_PYTHON:-${HOME}/sglang/python}"
-[[ -f "${SGL}/sglang/srt/layers/attention/dsa/dsa_indexer.py" ]] \
-  && ok "SGLang tree: ${SGL}" || fail "SGLang tree missing: ${SGL}"
+SGL="${SGlang_PYTHON:-}"
+if [[ -z "${SGL}" ]]; then
+  warn "SGlang_PYTHON not set in config/paths.env"
+elif [[ -f "${SGL}/sglang/srt/layers/attention/dsa/dsa_indexer.py" ]]; then
+  ok "SGLang tree: ${SGL}"
+else
+  fail "SGLang tree missing: ${SGL}"
+fi
 
 command -v nvcc >/dev/null && ok "nvcc: $(nvcc --version 2>/dev/null | grep -oP 'release \K[0-9.]+' | head -1)" || warn "nvcc not on PATH"
 command -v ncu >/dev/null && ok "ncu: $(command -v ncu)" || warn "ncu not on PATH"

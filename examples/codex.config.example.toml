@@ -23,18 +23,9 @@ requires_openai_auth = false
 goals = true
 hooks = true
 
-# 每个 RLCR 工作区加一条（trust_level = "trusted" 必需）
-[projects."/path/to/sglang-exp"]
+# 每个 Humanize RLCR 工作区加一条（trust_level = "trusted" 必需）
+[projects."/path/to/workspace"]
 trust_level = "trusted"
 
-[projects."/path/to/sglang-exp/glm52-kernel-opt"]
-trust_level = "trusted"
-
-[projects."/path/to/sglang-exp/glm52-index-k-opt"]
-trust_level = "trusted"
-
-[projects."/path/to/sglang-exp/glm52-index-score-opt"]
-trust_level = "trusted"
-
-[projects."/path/to/sglang-exp/glm52-moe-router-opt"]
+[projects."/path/to/another-workspace"]
 trust_level = "trusted"

@@ -22,7 +22,7 @@
 
 ### 共享 venv
 
-四工作区共 `glm52-kernel-opt/.venv`，升级一处影响全部。
+四工作区共 `shared/.venv`（见 `config/paths.env` 的 `VENV_ROOT`），升级一处影响全部。
 
 ---
 
@@ -62,7 +62,7 @@
 
 ## 6. Git / 工作区
 
-- **嵌套 git**：`glm52-kernel-opt` 父仓库是 `sglang-exp`；`git clean -fd` 删嵌套工作区 plan 文件
+- **嵌套 git**：子工作区嵌在父 monorepo 里；父仓库 `git clean -fd` 可能删掉子工作区 plan 文件
 - **共享 SGLang 树**：兄弟会话改 `dsa_indexer.py` → verify hash 过期
 - **RLCR 轮转**：stop-hook reset working tree → 未 commit 文件丢失
 

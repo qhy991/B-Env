@@ -220,7 +220,7 @@ requires_openai_auth = false
 goals = true
 hooks = true
 
-[projects."/path/to/sglang-exp/glm52-kernel-opt"]
+[projects."/path/to/workspace"]
 trust_level = "trusted"               # RLCR 需要 trusted 项目
 ```
 
@@ -268,7 +268,7 @@ cp examples/humanize.config.example.json .humanize/config.json
 ## 第六步：一键验证
 
 ```bash
-source scripts/env.sh glm52-kernel-opt
+source scripts/env.sh <workspace-name>
 bash scripts/verify-env.sh
 ```
 
@@ -351,4 +351,4 @@ bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
 | Codex review | `glm-5.2` | `.humanize/config.json` + modelMap |
 | BitLesson / 轻量任务 | `deepseek-v4-flash` | Humanize `bitlesson_model` |
 
-此搭配在本机 B200 + sglang-exp 四算子实验中验证可用。
+此搭配在 B200 算子优化实验中验证可用。

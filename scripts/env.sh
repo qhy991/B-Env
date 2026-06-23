@@ -2,9 +2,9 @@
 # Source in every shell session for GLM-5.2 B200 operator optimization.
 #
 #   source /path/to/B-Env/scripts/env.sh
-#   source /path/to/B-Env/scripts/env.sh glm52-moe-router-opt
+#   source /path/to/B-Env/scripts/env.sh <workspace-name>
 #
-# Optional arg: workspace name under $SGLANG_EXP_ROOT (default: glm52-kernel-opt)
+# Optional arg: workspace directory name under $SGLANG_EXP_ROOT (see config/paths.env)
 
 set -euo pipefail
 
@@ -19,11 +19,24 @@ elif [[ -f "${_B_ENV_ROOT}/config/paths.env.example" ]]; then
   source "${_B_ENV_ROOT}/config/paths.env.example"
 fi
 
-_WS_NAME="${1:-glm52-kernel-opt}"
-export SGLANG_EXP_ROOT="${SGLANG_EXP_ROOT:-${HOME}/sglang-exp}"
+if [[ -z "${SGLANG_EXP_ROOT:-}" ]]; then
+  echo "B-Env: set SGLANG_EXP_ROOT in config/paths.env (copy from paths.env.example)" >&2
+  exit 1
+fi
+
+_WS_NAME="${1:-}"
+if [[ -z "${_WS_NAME}" ]]; then
+  echo "B-Env: pass workspace name, e.g. source scripts/env.sh <workspace-name>" >&2
+  exit 1
+fi
 export GLM52_WORKSPACE="${SGLANG_EXP_ROOT}/${_WS_NAME}"
-export SGlang_PYTHON="${SGlang_PYTHON:-${HOME}/sglang/python}"
-export VENV_ROOT="${VENV_ROOT:-${SGLANG_EXP_ROOT}/glm52-kernel-opt/.venv}"
+export SGlang_PYTHON="${SGlang_PYTHON:-}"
+export VENV_ROOT="${VENV_ROOT:-}"
+
+if [[ -z "${SGlang_PYTHON}" || -z "${VENV_ROOT}" ]]; then
+  echo "B-Env: set SGlang_PYTHON and VENV_ROOT in config/paths.env" >&2
+  exit 1
+fi
 
 if [[ -f "${VENV_ROOT}/bin/activate" ]]; then
   # shellcheck disable=SC1091
