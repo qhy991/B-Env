@@ -1,7 +1,7 @@
-# Copy to ~/.codex/config.toml and adjust paths in [projects.*]
+# 复制到 ~/.codex/config.toml，并修改 [projects.*] 中的路径
 #
-# Codex talks to LOCAL codex-transfer (port 4446), NOT Infini-AI directly.
-# See docs/INFINI-AI-model-config.md for the full setup guide.
+# Codex 连接本地 codex-transfer（端口 4446），不要直连 Infini-AI。
+# 完整说明见 docs/INFINI-AI-model-config.md
 
 model_provider = "infini_transfer"
 model = "glm-5.2"
@@ -10,7 +10,7 @@ model_reasoning_effort = "high"
 disable_response_storage = true
 network_access = "enabled"
 
-# Codex sandbox bwrap fails on some hosts (RTM_NEWADDR). Required for RLCR review.
+# 部分 Linux 容器/共享主机上 bwrap 沙箱会失败，RLCR review 会 STALL
 sandbox_mode = "danger-full-access"
 
 [model_providers.infini_transfer]
@@ -23,7 +23,7 @@ requires_openai_auth = false
 goals = true
 hooks = true
 
-# Add one [projects] block per RLCR workspace (trust_level = "trusted" required)
+# 每个 RLCR 工作区加一条（trust_level = "trusted" 必需）
 [projects."/path/to/sglang-exp"]
 trust_level = "trusted"
 

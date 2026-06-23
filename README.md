@@ -6,6 +6,8 @@ GLM-5.2 decode operators (Index_Q, Index_K, Index_Score, MoE Router) on
 
 Repository: [github.com/qhy991/B-Env](https://github.com/qhy991/B-Env)
 
+**[中文版 README](README.zh-CN.md)** · Model config guide (中文): [docs/INFINI-AI-model-config.md](docs/INFINI-AI-model-config.md)
+
 ---
 
 ## Quick start
