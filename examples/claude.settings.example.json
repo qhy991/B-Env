@@ -1,0 +1,25 @@
+{
+  "enabledPlugins": {
+    "humanize@PolyArch": true,
+    "kersor@qhy991": true
+  },
+  "extraKnownMarketplaces": {
+    "PolyArch": {
+      "source": {
+        "source": "directory",
+        "path": "/path/to/humanize"
+      }
+    },
+    "qhy991": {
+      "source": {
+        "source": "directory",
+        "path": "/path/to/KerSor"
+      }
+    }
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "env": {
+    "HUMANIZE_CODEX_BYPASS_SANDBOX": "true"
+  }
+}

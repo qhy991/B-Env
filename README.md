@@ -56,13 +56,19 @@ B-Env/
 │   ├── setup-env.sh           # One-time bootstrap
 │   ├── env.sh                 # Source every session
 │   ├── verify-env.sh          # Health check
+│   ├── install-codex-transfer.sh
+│   ├── start-codex-transfer.sh
 │   └── requirements-glm52-b200.txt
 ├── docs/
 │   ├── ENVIRONMENT-setup.md   # Full deployment guide
-│   └── ENVIRONMENT-issues.md  # Known pitfalls from experiments
+│   ├── ENVIRONMENT-issues.md  # Known pitfalls from experiments
+│   └── INFINI-AI-model-config.md  # Claude + Codex + Infini-AI setup
 └── examples/
+    ├── infini-api.env.example
+    ├── claude.settings.example.json
     ├── codex-transfer.config.example.json
-    └── codex.config.example.toml
+    ├── codex.config.example.toml
+    └── humanize.config.example.json
 ```
 
 ---
@@ -90,11 +96,38 @@ See [docs/ENVIRONMENT-setup.md](docs/ENVIRONMENT-setup.md) for details.
 
 ## Codex / Humanize RLCR
 
-For Humanize RLCR loops with Codex review via Infini-AI:
+Full guide: **[docs/INFINI-AI-model-config.md](docs/INFINI-AI-model-config.md)**
 
-1. Run `codex-transfer` on port 4446 (see `examples/codex-transfer.config.example.json`)
-2. Point `~/.codex/config.toml` at `http://127.0.0.1:4446/v1` (see `examples/codex.config.example.toml`)
-3. Verify: `curl -s http://127.0.0.1:4446/health`
+Quick setup for Humanize RLCR with Infini-AI models:
+
+```bash
+# 1. API keys + Claude routing
+cp examples/infini-api.env.example ~/.omp/agent/.env   # edit keys
+cp examples/claude.settings.example.json ~/.claude/settings.json
+
+# 2. codex-transfer (Codex review bridge)
+bash scripts/install-codex-transfer.sh
+cp examples/codex-transfer.config.example.json ~/.codex-transfer/config.json
+source ~/.omp/agent/.env && bash scripts/start-codex-transfer.sh
+
+# 3. Codex CLI
+cp examples/codex.config.example.toml ~/.codex/config.toml
+
+# 4. Per-workspace Humanize override
+cp examples/humanize.config.example.json /path/to/workspace/.humanize/config.json
+
+# 5. Verify
+curl -s http://127.0.0.1:4446/health
+bash scripts/verify-env.sh
+```
+
+| Config file | Purpose |
+|-------------|---------|
+| `~/.omp/agent/.env` | Infini-AI keys + `ANTHROPIC_*` for Claude Code |
+| `~/.claude/settings.json` | Humanize/KerSor plugins, sandbox bypass |
+| `~/.codex-transfer/config.json` | Upstream URL + modelMap |
+| `~/.codex/config.toml` | Codex → local proxy on :4446 |
+| `.humanize/config.json` | Review model (`codex_model`) per workspace |
 
 ---
 

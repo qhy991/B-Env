@@ -1,4 +1,7 @@
 # Copy to ~/.codex/config.toml and adjust paths in [projects.*]
+#
+# Codex talks to LOCAL codex-transfer (port 4446), NOT Infini-AI directly.
+# See docs/INFINI-AI-model-config.md for the full setup guide.
 
 model_provider = "infini_transfer"
 model = "glm-5.2"
@@ -7,11 +10,11 @@ model_reasoning_effort = "high"
 disable_response_storage = true
 network_access = "enabled"
 
-# Codex sandbox bwrap fails on some hosts (RTM_NEWADDR). Use for RLCR review only.
+# Codex sandbox bwrap fails on some hosts (RTM_NEWADDR). Required for RLCR review.
 sandbox_mode = "danger-full-access"
 
 [model_providers.infini_transfer]
-name = "Infini-AI via codex-transfer"
+name = "Infini-AI GenStudio via codex-transfer"
 base_url = "http://127.0.0.1:4446/v1"
 wire_api = "responses"
 requires_openai_auth = false
@@ -20,5 +23,18 @@ requires_openai_auth = false
 goals = true
 hooks = true
 
+# Add one [projects] block per RLCR workspace (trust_level = "trusted" required)
 [projects."/path/to/sglang-exp"]
+trust_level = "trusted"
+
+[projects."/path/to/sglang-exp/glm52-kernel-opt"]
+trust_level = "trusted"
+
+[projects."/path/to/sglang-exp/glm52-index-k-opt"]
+trust_level = "trusted"
+
+[projects."/path/to/sglang-exp/glm52-index-score-opt"]
+trust_level = "trusted"
+
+[projects."/path/to/sglang-exp/glm52-moe-router-opt"]
 trust_level = "trusted"

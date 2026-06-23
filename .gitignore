@@ -1,6 +1,7 @@
 # Local overrides (machine-specific paths, API keys)
 config/paths.env
 config/codex-transfer.config.json
+config/infini-api.env
 
 # Python
 .venv/
